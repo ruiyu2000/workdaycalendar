@@ -86,43 +86,53 @@ internal class WorkdayCalendarTest {
         data class TestData(
             val startDate: Date,
             val increment: Float,
-            val expected: Date
+            val expected: String
         )
         arrayOf(
-            // 24-05-2004 18:05 med tillegg av -5.5 arbeidsdager er 14-05-2004 12:00
-            TestData(
-                GregorianCalendar(2004, Calendar.MAY, 24, 18, 5).time,
-                -5.5f,
-                GregorianCalendar(2004, Calendar.MAY, 14, 12, 0).time,
-            ),
             // 24-05-2004 19:03 med tillegg av 44.723656 arbeidsdager er 27-07-2004 13:47
             TestData(
                 GregorianCalendar(2004, Calendar.MAY, 24, 19, 3).time,
                 44.723656f,
-                GregorianCalendar(2004, Calendar.JULY, 27, 13, 47, 21).time,
-            ),
-            // 24-05-2004 18:03 med tillegg av -6.7470217 arbeidsdager er 13-05-2004 10:02
-            TestData(
-                GregorianCalendar(2004, Calendar.MAY, 24, 18, 3).time,
-                -6.7470217f,
-                GregorianCalendar(2004, Calendar.MAY, 13, 10, 1, 25).time,
+                GregorianCalendar(2004, Calendar.JULY, 27, 13, 47, 21).time.toString(),
             ),
             // 24-05-2004 08:03 med tillegg av 12.782709 arbeidsdager er 10-06-2004 14:18
             TestData(
                 GregorianCalendar(2004, Calendar.MAY, 24, 8, 3).time,
                 12.782709f,
-                GregorianCalendar(2004, Calendar.JUNE, 10, 14, 18, 42).time,
+                GregorianCalendar(2004, Calendar.JUNE, 10, 14, 18, 42).time.toString(),
             ),
             // 24-05-2004 07:03 med tillegg av 8.276628 arbeidsdager er 04-06-2004 10:12
             TestData(
                 GregorianCalendar(2004, Calendar.MAY, 24, 7, 3).time,
                 8.276628f,
-                GregorianCalendar(2004, Calendar.JUNE, 4, 10, 12, 46).time,
+                GregorianCalendar(2004, Calendar.JUNE, 4, 10, 12, 46).time.toString(),
+            ),
+            // 24-05-2004 18:05 med tillegg av -5.5 arbeidsdager er 14-05-2004 12:00
+            TestData(
+                GregorianCalendar(2004, Calendar.MAY, 24, 18, 5).time,
+                -5.5f,
+                GregorianCalendar(2004, Calendar.MAY, 14, 12, 0).time.toString(),
+            ),
+            // 24-05-2004 18:03 med tillegg av -6.7470217 arbeidsdager er 13-05-2004 10:02
+            TestData(
+                GregorianCalendar(2004, Calendar.MAY, 24, 18, 3).time,
+                -6.7470217f,
+                GregorianCalendar(2004, Calendar.MAY, 13, 10, 1, 25).time.toString(),
+            ),
+            TestData(
+                GregorianCalendar(2004, Calendar.MAY, 24, 15, 59).time,
+                .1f,
+                GregorianCalendar(2004, Calendar.MAY, 25, 8, 47).time.toString(),
+            ),
+            TestData(
+                GregorianCalendar(2004, Calendar.MAY, 25, 8, 47).time,
+                -.1f,
+                GregorianCalendar(2004, Calendar.MAY, 24, 15, 59).time.toString(),
             ),
         ).forEach {
             assertEquals(
                 it.expected,
-                workdayCalendar.getWorkdayIncrement(it.startDate, it.increment)
+                workdayCalendar.getWorkdayIncrement(it.startDate, it.increment).toString()
             )
         }
     }

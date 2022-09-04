@@ -15,24 +15,76 @@ class WorkdayCalendar(private val workdayStart: Calendar, private val workdaySto
         recurringHolidays += recurringHoliday
     }
 
+    private fun getWorkdayStartWithCalendar(calendar: Calendar): Calendar {
+        return GregorianCalendar(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH),
+            workdayStart.get(Calendar.HOUR_OF_DAY),
+            workdayStart.get(Calendar.MINUTE),
+            workdayStart.get(Calendar.SECOND),
+        )
+    }
+
+    private fun getWorkdayStopWithCalendar(calendar: Calendar): Calendar {
+        return GregorianCalendar(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH),
+            workdayStop.get(Calendar.HOUR_OF_DAY),
+            workdayStop.get(Calendar.MINUTE),
+            workdayStop.get(Calendar.SECOND),
+        )
+    }
+
     enum class TimeDirection {
         BEFORE, AFTER
     }
 
     fun getWorkdayIncrement(startDate: Date, incrementInWorkdays: Float): Date {
-        val calendar = Calendar.getInstance().apply { time = startDate }
-        val millisecondsPerWorkday = workdayStart.timeInMillis - workdayStop.timeInMillis
+        var calendar = Calendar.getInstance().apply { time = startDate }
+        val millisecondsPerWorkday = workdayStop.timeInMillis - workdayStart.timeInMillis
+        var workdays = incrementInWorkdays
 
-        when (val timeDirection = if (incrementInWorkdays > 0) TimeDirection.AFTER else TimeDirection.BEFORE) {
+        when (val timeDirection = if (workdays > 0) TimeDirection.AFTER else TimeDirection.BEFORE) {
             TimeDirection.AFTER -> {
-
+                goToNextWorkingHour(calendar, timeDirection)
+                while (workdays >= 1) {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1)
+                    if (!isWeekend(calendar) && !isHoliday(calendar)) {
+                        workdays--
+                    }
+                }
+                var remainder = millisecondsPerWorkday * workdays
+                val timeLeftTilEnd = getWorkdayStopWithCalendar(calendar).timeInMillis - calendar.timeInMillis
+                if (timeLeftTilEnd < remainder) {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1)
+                    calendar = getWorkdayStartWithCalendar(calendar)
+                    remainder -= timeLeftTilEnd
+                }
+                calendar.add(Calendar.MILLISECOND, remainder.toInt())
             }
-            TimeDirection.BEFORE -> {
 
+            TimeDirection.BEFORE -> {
+                goToNextWorkingHour(calendar, timeDirection)
+                while (workdays <= -1) {
+                    calendar.add(Calendar.DAY_OF_YEAR, -1)
+                    if (!isWeekend(calendar) && !isHoliday(calendar)) {
+                        workdays++
+                    }
+                }
+                var remainder = millisecondsPerWorkday * -workdays
+                val timeLeftTilStart = calendar.timeInMillis - getWorkdayStartWithCalendar(calendar).timeInMillis
+                if (timeLeftTilStart < remainder) {
+                    calendar.add(Calendar.DAY_OF_YEAR, -1)
+                    calendar = getWorkdayStopWithCalendar(calendar)
+                    remainder -= timeLeftTilStart
+                }
+                calendar.add(Calendar.MILLISECOND, -remainder.toInt())
             }
         }
 
-        return startDate
+        return calendar.time
     }
 
     fun isHoliday(localDate: LocalDate): Boolean {
@@ -56,34 +108,12 @@ class WorkdayCalendar(private val workdayStart: Calendar, private val workdaySto
         return calendar.time.after(start) && calendar.time.before(stop)
     }
 
-    private fun getWorkdayStartWithCalendar(calendar: Calendar): Calendar {
-        return GregorianCalendar(
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH),
-            workdayStart.get(Calendar.HOUR_OF_DAY),
-            workdayStart.get(Calendar.MINUTE),
-            workdayStart.get(Calendar.SECOND),
-        )
-    }
-
-    private fun getWorkdayStopWithCalendar(calendar: Calendar): Calendar {
-        return GregorianCalendar(
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH),
-            workdayStop.get(Calendar.HOUR_OF_DAY),
-            workdayStop.get(Calendar.MINUTE),
-            workdayStop.get(Calendar.SECOND),
-        )
-    }
-
     fun goToNextWorkingHour(calendar: Calendar, direction: TimeDirection = TimeDirection.AFTER) {
         if (isWithinWorkingHours(calendar)) return
 
         when (direction) {
             TimeDirection.AFTER -> {
-                val isAfterEnd = calendar.time.after(getWorkdayStopWithCalendar(calendar).time)
+                val isAfterStop = calendar.time.after(getWorkdayStopWithCalendar(calendar).time)
                 val isBeforeMidnight = calendar.time.before(
                     getMidnight(calendar).apply { add(Calendar.DAY_OF_YEAR, 1) }.time
                 )
@@ -91,7 +121,7 @@ class WorkdayCalendar(private val workdayStart: Calendar, private val workdaySto
                     set(Calendar.HOUR_OF_DAY, workdayStart.get(Calendar.HOUR_OF_DAY))
                     set(Calendar.MINUTE, workdayStart.get(Calendar.MINUTE))
                     set(Calendar.SECOND, workdayStart.get(Calendar.SECOND))
-                    if (isAfterEnd && isBeforeMidnight) {
+                    if (isAfterStop && isBeforeMidnight) {
                         add(Calendar.DAY_OF_YEAR, 1)
                     }
                     while (isWeekend(this) || isHoliday(this)) {
