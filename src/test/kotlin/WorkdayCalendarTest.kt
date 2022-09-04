@@ -6,7 +6,7 @@ import java.util.*
 
 internal class WorkdayCalendarTest {
 
-    lateinit var workdayCalendar: WorkdayCalendar
+    private lateinit var workdayCalendar: WorkdayCalendar
 
     @BeforeEach
     fun setUp() {
@@ -14,6 +14,14 @@ internal class WorkdayCalendarTest {
             GregorianCalendar(2004, Calendar.JANUARY, 1, 8, 0),
             GregorianCalendar(2004, Calendar.JANUARY, 1, 16, 0)
         )
+    }
+
+    @Test
+    fun isWeekend() {
+        assertEquals(false, WorkdayCalendar.isWeekend(GregorianCalendar(2022, Calendar.SEPTEMBER, 2, 0, 0)))
+        assertEquals(true, WorkdayCalendar.isWeekend(GregorianCalendar(2022, Calendar.SEPTEMBER, 3, 0, 0)))
+        assertEquals(true, WorkdayCalendar.isWeekend(GregorianCalendar(2022, Calendar.SEPTEMBER, 4, 0, 0)))
+        assertEquals(false, WorkdayCalendar.isWeekend(GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 0, 0)))
     }
 
     @Test
