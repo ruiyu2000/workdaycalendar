@@ -38,6 +38,23 @@ internal class WorkdayCalendarTest {
     }
 
     @Test
+    fun isWithinWorkingHours() {
+        data class TestData(
+            val expected: Boolean,
+            val calendar: Calendar
+        )
+        arrayOf(
+            TestData(false, GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 0, 0)),
+            TestData(false, GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 7, 59, 59)),
+            TestData(true, GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 8, 0)),
+            TestData(true, GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 15, 59, 59)),
+            TestData(false, GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 16, 0, 0)),
+        ).forEach {
+            assertEquals(it.expected, workdayCalendar.isWithinWorkingHours(it.calendar))
+        }
+    }
+
+    @Test
     fun `works with supplied inputs`() {
         workdayCalendar.setRecurringHoliday(LocalDate.of(2004, 5, 17))
         workdayCalendar.setHoliday(LocalDate.of(2004, 5, 27))

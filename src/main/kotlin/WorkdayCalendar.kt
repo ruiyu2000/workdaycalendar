@@ -2,7 +2,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
-class WorkdayCalendar(val workdayStart: Calendar, val workdayStop: Calendar) {
+class WorkdayCalendar(private val workdayStart: Calendar, private val workdayStop: Calendar) {
 
     private val holidays = mutableSetOf<LocalDate>()
     private val recurringHolidays = mutableSetOf<LocalDate>()
@@ -30,6 +30,29 @@ class WorkdayCalendar(val workdayStart: Calendar, val workdayStop: Calendar) {
 
     fun isHoliday(calendar: Calendar): Boolean {
         return isHoliday(calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+    }
+
+    fun isWithinWorkingHours(calendar: Calendar): Boolean {
+        if (isWeekend(calendar) || isHoliday(calendar)) return false
+
+        val start = GregorianCalendar(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH),
+            workdayStart.get(Calendar.HOUR_OF_DAY),
+            workdayStart.get(Calendar.MINUTE),
+            workdayStart.get(Calendar.SECOND),
+        ).apply { add(Calendar.MILLISECOND, -1) }.time
+        val stop = GregorianCalendar(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH),
+            workdayStop.get(Calendar.HOUR_OF_DAY),
+            workdayStop.get(Calendar.MINUTE),
+            workdayStop.get(Calendar.SECOND),
+        ).time
+
+        return calendar.time.after(start) && calendar.time.before(stop)
     }
 
     companion object {
