@@ -55,6 +55,30 @@ internal class WorkdayCalendarTest {
     }
 
     @Test
+    fun goToNextWorkingHour() {
+        var calendar = GregorianCalendar(2004, Calendar.MAY, 24, 19, 3)
+        workdayCalendar.goToNextWorkingHour(calendar)
+        assertEquals(
+            GregorianCalendar(2004, Calendar.MAY, 25, 8, 0).time,
+            calendar.time
+        )
+
+        calendar = GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 0, 0)
+        workdayCalendar.goToNextWorkingHour(calendar)
+        assertEquals(
+            GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 8, 0).time,
+            calendar.time
+        )
+
+        calendar = GregorianCalendar(2022, Calendar.SEPTEMBER, 5, 0, 0)
+        workdayCalendar.goToNextWorkingHour(calendar, WorkdayCalendar.TimeDirection.BEFORE)
+        assertEquals(
+            GregorianCalendar(2022, Calendar.SEPTEMBER, 2, 16, 0).time,
+            calendar.time
+        )
+    }
+
+    @Test
     fun `works with supplied inputs`() {
         workdayCalendar.setRecurringHoliday(LocalDate.of(2004, 5, 17))
         workdayCalendar.setHoliday(LocalDate.of(2004, 5, 27))

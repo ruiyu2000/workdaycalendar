@@ -56,12 +56,49 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="WorkdayCalendarTest.isWeekend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.WorkdayCalendarTest (2)">
+    <configuration name="WorkdayCalendarTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="workdaycalendar" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="WorkdayCalendarTest" />
-      <option name="METHOD_NAME" value="isWeekend" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WorkdayCalendarTest (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="workdaycalendar" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="WorkdayCalendarTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WorkdayCalendarTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="workdaycalendar" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="WorkdayCalendarTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WorkdayCalendarTest.isHoliday" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="workdaycalendar" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="WorkdayCalendarTest" />
+      <option name="METHOD_NAME" value="isHoliday" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WorkdayCalendarTest.isWithinWorkingHours" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="workdaycalendar" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="WorkdayCalendarTest" />
+      <option name="METHOD_NAME" value="isWithinWorkingHours" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -69,7 +106,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.WorkdayCalendarTest.isWeekend" />
+        <item itemvalue="JUnit.WorkdayCalendarTest (2)" />
+        <item itemvalue="JUnit.WorkdayCalendarTest.isWithinWorkingHours" />
+        <item itemvalue="JUnit.WorkdayCalendarTest (1)" />
+        <item itemvalue="JUnit.WorkdayCalendarTest.isHoliday" />
+        <item itemvalue="JUnit.WorkdayCalendarTest" />
       </list>
     </recent_temporary>
   </component>
@@ -81,7 +122,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1662285849993</updated>
-      <workItem from="1662285851777" duration="1189000" />
+      <workItem from="1662285851777" duration="4339000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <created>1662285884889</created>
@@ -104,7 +145,28 @@
       <option name="project" value="LOCAL" />
       <updated>1662286889904</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="isweekend">
+      <created>1662287344838</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1662287344838</updated>
+    </task>
+    <task id="LOCAL-00005" summary="isholiday">
+      <created>1662288273788</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1662288273788</updated>
+    </task>
+    <task id="LOCAL-00006" summary="iswithinworkinghours">
+      <created>1662288961930</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1662288961930</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,21 +176,9 @@
     <MESSAGE value="initial" />
     <MESSAGE value="boilerplate" />
     <MESSAGE value="testdata" />
-    <option name="LAST_COMMIT_MESSAGE" value="testdata" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-function">
-          <url>file://$PROJECT_DIR$/src/test/kotlin/WorkdayCalendarTest.kt</url>
-          <line>27</line>
-          <properties class="WorkdayCalendarTest" method="works with supplied inputs">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="isweekend" />
+    <MESSAGE value="isholiday" />
+    <MESSAGE value="iswithinworkinghours" />
+    <option name="LAST_COMMIT_MESSAGE" value="iswithinworkinghours" />
   </component>
 </project>
