@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 import java.util.*
 
 
@@ -25,9 +26,21 @@ internal class WorkdayCalendarTest {
     }
 
     @Test
+    fun isHoliday() {
+        workdayCalendar.setRecurringHoliday(LocalDate.of(2004, 1, 1))
+        workdayCalendar.setHoliday(LocalDate.of(2004, 12, 25))
+
+        assertEquals(false, workdayCalendar.isHoliday(GregorianCalendar(2022, Calendar.SEPTEMBER, 4, 0, 0)))
+        assertEquals(true, workdayCalendar.isHoliday(GregorianCalendar(2004, Calendar.JANUARY, 1, 0, 1)))
+        assertEquals(true, workdayCalendar.isHoliday(GregorianCalendar(2005, Calendar.JANUARY, 1, 0, 1)))
+        assertEquals(true, workdayCalendar.isHoliday(GregorianCalendar(2004, Calendar.DECEMBER, 25, 0, 0)))
+        assertEquals(false, workdayCalendar.isHoliday(GregorianCalendar(2005, Calendar.DECEMBER, 25, 0, 0)))
+    }
+
+    @Test
     fun `works with supplied inputs`() {
-        workdayCalendar.setRecurringHoliday(GregorianCalendar(2004, Calendar.MAY, 17, 0, 0))
-        workdayCalendar.setHoliday(GregorianCalendar(2004, Calendar.MAY, 27, 0, 0))
+        workdayCalendar.setRecurringHoliday(LocalDate.of(2004, 5, 17))
+        workdayCalendar.setHoliday(LocalDate.of(2004, 5, 27))
 
         data class TestData(
             val startDate: Date,

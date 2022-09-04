@@ -1,21 +1,35 @@
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 class WorkdayCalendar(val workdayStart: Calendar, val workdayStop: Calendar) {
 
-    val holidays = mutableSetOf<Calendar>()
-    val recurringHolidays = mutableSetOf<Calendar>()
+    private val holidays = mutableSetOf<LocalDate>()
+    private val recurringHolidays = mutableSetOf<LocalDate>()
 
-    fun setHoliday(holiday: Calendar) {
+    fun setHoliday(holiday: LocalDate) {
         holidays += holiday
     }
 
-    fun setRecurringHoliday(recurringHoliday: Calendar) {
+    fun setRecurringHoliday(recurringHoliday: LocalDate) {
         recurringHolidays += recurringHoliday
     }
 
     fun getWorkdayIncrement(startDate: Date, incrementInWorkdays: Float): Date {
 
         return startDate
+    }
+
+    fun isHoliday(localDate: LocalDate): Boolean {
+        val isHoliday = holidays.contains(localDate)
+        val isRecurringHoliday = recurringHolidays.find {
+            it == LocalDate.of(it.year, localDate.monthValue, localDate.dayOfMonth)
+        } != null
+        return isHoliday || isRecurringHoliday
+    }
+
+    fun isHoliday(calendar: Calendar): Boolean {
+        return isHoliday(calendar.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
     }
 
     companion object {
